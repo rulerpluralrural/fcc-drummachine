@@ -2,7 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Encode+Sans:wght@200;300;400;500&family=Tajawal:wght@300;400;500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Encode+Sans:wght@200;300;400;500&family=Tajawal:wght@300;400;500&display=swap");
+
+@layer base {
+	#drum-machine {
+		font-family: "Encode sans", sans-serif;
+	}
+}
 
 *,
 *::before,
@@ -10,4 +16,26 @@
 	padding: 0;
 	margin: 0;
 	box-sizing: border-box;
+}
+
+p {
+	padding-block: 0.3rem;
+	font-family: "Tajawal", sans-serif;
+}
+
+.drum-pad {
+	background-color: beige;
+	color: #1b1515;
+	padding: 0.5rem;
+	border-radius: 5px;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-weight: bold;
+}
+
+.drum-pad:hover,
+.drum-pad:focus {
+	background-color: lightgray;
 }
