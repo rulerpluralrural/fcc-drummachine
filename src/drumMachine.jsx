@@ -1,19 +1,7 @@
 import React from "react";
+import KeyPad from "./Components/keyPad";
 
 export default class DrumMachine extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-            text: ''
-        };
-
-        this.handleKey = () => {
-            this.setState({
-
-            })
-        }
-	}
-
 	render() {
 		return (
 			<div className="h-screen flex items-center justify-center text-center">
@@ -25,80 +13,7 @@ export default class DrumMachine extends React.Component {
 						className="bg-gradient-to-b from-gray-100 to-gray-300 text-[#1b1515] text-center font-semibold self-center my-4 h-10 p-2 w-[300px] rounded-md"
 						id="display"
 					></div>
-					<div className="pad-container py-2 grid grid-cols-[repeat(3,80px)] gap-x-5 gap-y-2 place-content-center">
-						<div className="drum-pad" onKeyDown={this.handleKey}>
-							<audio
-								src="https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3"
-								className="clip"
-								id="Q"
-							></audio>
-							Q
-						</div>
-						<div className="drum-pad">
-							<audio
-								src="https://s3.amazonaws.com/freecodecamp/drums/Heater-2.mp3"
-								className="clip"
-								id="Q"
-							></audio>
-							W
-						</div>
-						<div className="drum-pad">
-							<audio
-								src="https://s3.amazonaws.com/freecodecamp/drums/Heater-3.mp3"
-								className="clip"
-								id="Q"
-							></audio>
-							E
-						</div>
-						<div className="drum-pad">
-							<audio
-								src="https://s3.amazonaws.com/freecodecamp/drums/Heater-4_1.mp3"
-								className="clip"
-								id="Q"
-							></audio>
-							A
-						</div>
-						<div className="drum-pad">
-							<audio
-								src="https://s3.amazonaws.com/freecodecamp/drums/Heater-6.mp3"
-								className="clip"
-								id="Q"
-							></audio>
-							S
-						</div>
-						<div className="drum-pad">
-							<audio
-								src="https://s3.amazonaws.com/freecodecamp/drums/Dsc_Oh.mp3"
-								className="clip"
-								id="Q"
-							></audio>
-							D
-						</div>
-						<div className="drum-pad">
-							<audio
-								src="https://s3.amazonaws.com/freecodecamp/drums/Kick_n_Hat.mp3"
-								className="clip"
-								id="Q"
-							></audio>
-							Z
-						</div>
-						<div className="drum-pad">
-							<audio
-								src="https://s3.amazonaws.com/freecodecamp/drums/RP4_KICK_1.mp3"
-								className="clip"
-								id="Q"
-							></audio>
-							X
-						</div>
-						<div className="drum-pad">
-							<audio
-								src="https://s3.amazonaws.com/freecodecamp/drums/Cev_H2.mp3"
-								className="clip"
-								id="Q"
-							></audio>
-							C
-						</div>
-					</div>
+						<KeyPad />
 					<div>
 						<p>Volume</p>
 						<input
