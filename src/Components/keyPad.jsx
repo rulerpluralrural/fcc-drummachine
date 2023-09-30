@@ -1,107 +1,66 @@
-import React from "react";
+/* eslint-disable react/prop-types */
+// eslint-disable-next-line no-unused-vars
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
-// export default class KeyPad extends React.Component {
-// 	constructor(props) {
-// 		super(props);
-// 		/**@type {React.RefObject<HTMLAudioElement>} */
-// 		this.audioRef = React.createRef(null);
-// 		this.state = {
-// 			texts: ["Q", "W", "E", "A", "S", "D", "Z", "X", "C"],
-// 			sources: [
-// 				"https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3",
-// 				"https://s3.amazonaws.com/freecodecamp/drums/Heater-2.mp3",
-// 				"https://s3.amazonaws.com/freecodecamp/drums/Heater-3.mp3",
-// 				"https://s3.amazonaws.com/freecodecamp/drums/Heater-4_1.mp3",
-// 				"https://s3.amazonaws.com/freecodecamp/drums/Heater-6.mp3",
-// 				"https://s3.amazonaws.com/freecodecamp/drums/Dsc_Oh.mp3",
-// 				"https://s3.amazonaws.com/freecodecamp/drums/Kick_n_Hat.mp3",
-// 				"https://s3.amazonaws.com/freecodecamp/drums/RP4_KICK_1.mp3",
-// 				"https://s3.amazonaws.com/freecodecamp/drums/Cev_H2.mp3",
-// 			],
-// 			describe: [
-// 				"Heater 1",
-// 				"Heater 2",
-// 				"Heater 3",
-// 				"Heater 4",
-// 				"Clap",
-// 				"Open High Hat",
-// 				"Kick n' Hat",
-// 				"Kick",
-// 				"Closed High Hat",
-// 			],
-// 		};
+/**
+ * @param {{ keyCode: string, source: string, name: string, handleDisplay: function, isPowerOn: boolean;}} props
+ */
+export default function KeyPad(props) {
+	const audioRef = useRef(null);
+	const [buttonIsPressed, setButtonIsPressed] = useState(false);
 
-// 		this.renderPadElement = this.state.texts.map((text, index) => {
-// 			return (
-// 				<div
-// 					className="bg-gray-400 h-11 text-[#1b1515] p-1 rounded-[5px] cursor-pointer flex justify-center items-center font-bold hover:bg-gray-300"
-// 					role="button"
-// 					key={index}
-// 					onClick={() => {
-// 						console.log(this.audioRef.current);
-// 					}}
-// 				>
-// 					{text}
-// 					<audio
-// 						ref={this.audioRef}
-// 						src={this.state.sources[index]}
-// 						id={text}
-// 					></audio>
-// 				</div>
-// 			);
-// 		});
-
-// 		// document.addEventListener("keydown", this.handleKeyBoard);
-// 	}
-
-// 	render() {
-// 		return (
-// 			<div className="grid grid-cols-[repeat(3,100px)] gap-x-2 gap-y-1 place-content-center my-2">
-// 				{this.renderPadElement}
-// 			</div>
-// 		);
-// 	}
-// }
-
-export default function KeyPad() {
-	const audioRef = React.useRef(null);
-
-	const texts = ["Q", "W", "E", "A", "S", "D", "Z", "X", "C"];
-	const sources = [
-		"https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3",
-		"https://s3.amazonaws.com/freecodecamp/drums/Heater-2.mp3",
-		"https://s3.amazonaws.com/freecodecamp/drums/Heater-3.mp3",
-		"https://s3.amazonaws.com/freecodecamp/drums/Heater-4_1.mp3",
-		"https://s3.amazonaws.com/freecodecamp/drums/Heater-6.mp3",
-		"https://s3.amazonaws.com/freecodecamp/drums/Dsc_Oh.mp3",
-		"https://s3.amazonaws.com/freecodecamp/drums/Kick_n_Hat.mp3",
-		"https://s3.amazonaws.com/freecodecamp/drums/RP4_KICK_1.mp3",
-		"https://s3.amazonaws.com/freecodecamp/drums/Cev_H2.mp3",
-	];
-
-	function renderPadElement() {
-		return texts.map((text, index) => {
-			return (
-				<div
-					className="bg-gray-400 h-11 text-[#1b1515] p-1 rounded-[5px] cursor-pointer flex justify-center items-center font-bold hover:bg-gray-300"
-					role="button"
-					key={index}
-					onClick={handleEvent}
-				>
-					{text}
-					<audio ref={audioRef} src={sources[index]} id={text}></audio>
-				</div>
-			);
-		});
+	function handleClick() {
+		if (!audioRef.current) return;
+		if (!props.isPowerOn) return;
+		audioRef.current.currentTime = 0;
+		audioRef.current.play();
+		props.handleDisplay(props.name);
 	}
 
-    function handleEvent() {
-        console.log(audioRef.current)
-    }
+	useEffect(() => {
+		const handleKeydown = (e) => {
+			if (!audioRef.current) return;
+			if (e.key.toUpperCase() === audioRef.current.id) {
+				console.log(audioRef.current);
+				audioRef.current.currentTime = 0;
+				audioRef.current.play();
+				props.handleDisplay(props.name);
+				setButtonIsPressed(true);
+			}
+		};
+
+		const handleKeyUp = (e) => {
+			if (!audioRef.current) return;
+			if (e.key.toUpperCase() === audioRef.current.id) {
+				setButtonIsPressed(false);
+			}
+		};
+
+		if (props.isPowerOn) {
+			window.addEventListener("keydown", handleKeydown);
+			window.addEventListener("keyup", handleKeyUp);
+		} else {
+			window.removeEventListener("keydown", handleKeydown);
+			window.removeEventListener("keyup", handleKeyUp);
+		}
+
+		return () => {
+			window.removeEventListener("keydown", handleKeydown);
+			window.removeEventListener("keyup", handleKeyUp);
+		}
+	}, [props.isPowerOn]);
 
 	return (
-		<div className="grid grid-cols-[repeat(3,100px)] gap-x-2 gap-y-1 place-content-center my-2">
-			{renderPadElement()}
+		<div
+			className={`h-11 text-[#1b1515] p-1 rounded-[5px] cursor-pointer flex justify-center items-center font-bold transition ease-in duration-150 hover:bg-gray-300 hover:scale-105 ${
+				buttonIsPressed ? "bg-gray-300 scale-105" : "bg-gray-400"
+			}`}
+			role="button"
+			id={props.name}
+			onClick={handleClick}
+		>
+			{props.keyCode}
+			<audio ref={audioRef} src={props.source} id={props.keyCode}></audio>
 		</div>
 	);
 }
