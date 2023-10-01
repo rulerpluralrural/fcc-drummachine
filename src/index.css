@@ -22,20 +22,3 @@ p {
 	padding-block: 0.3rem;
 	font-family: "Tajawal", sans-serif;
 }
-
-.drum-pad {
-	background-color: beige;
-	color: #1b1515;
-	padding: 0.5rem;
-	border-radius: 5px;
-	cursor: pointer;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	font-weight: bold;
-}
-
-.drum-pad:hover,
-.drum-pad:focus {
-	background-color: lightgray;
-}
